@@ -29,7 +29,7 @@ jobs:
       - name: Download latest CSV from the link
         run: |-
           wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-          echo "${{ steps.datetime.outputs.datetime }} Updated ${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }} Timestamp" >> logs/${{ steps.datetime.outputs.date }}.txt
+          echo "${{ steps.datetime.outputs.datetime }} Updated ${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }} Timestamp" >> timestamps/${{ steps.datetime.outputs.date }}.txt
       - name: Commit all changes
         id: commit
         run: |-
