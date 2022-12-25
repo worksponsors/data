@@ -1,0 +1,40 @@
+name: Find File Commits
+
+on: [push]
+
+jobs:
+  find-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find Last Commit Hash
+        run: |
+          git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > last_commit_hash.txt
+      - name: Save Output
+        run: |
+          while read -r commit_hash; do
+            # Get the difference between the commit and its parent commit
+            diff=$(git diff "$commit_hash"^ "$commit_hash" --shortstat -- <file_path>)
+            # Extract the number of additions and deletions
+            additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
+            deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
+            # Write the additions and deletions to separate files
+            echo "$additions" > logs/additions.txt
+            echo "$deletions" > logs/deletions.txt
+          done < last_commit_hash.txt
+      - name: Add and Commit Files
+        run: |
+          # Check if there are any staged changes
+          changes=$(git diff-index --cached HEAD)
+          if [ -n "$changes" ]; then
+            # There are staged changes, so commit the files
+            git add additions.txt deletions.txt
+            git commit -m "Add additions and deletions for file"
+          else
+            # There are no staged changes, so do not commit
+            echo "Nothing to commit"
+          fi
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
