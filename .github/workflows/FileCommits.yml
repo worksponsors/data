@@ -19,8 +19,8 @@ jobs:
             additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
             deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
             # Write the additions and deletions to separate files
-            echo "$additions" > logs/additions.txt
-            echo "$deletions" > logs/deletions.txt
+            echo "$additions" > additions.txt
+            echo "$deletions" > deletions.txt
           done < last_commit_hash.txt
       - name: Add and Commit Files
         run: |
