@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
+      - with:
           fetch-depth: 0
       - name: Update Repository
         run: |
@@ -27,3 +27,17 @@ jobs:
             echo "$additions" > additions.txt
             echo "$deletions" > deletions.txt
           done < last_commit_hash.txt
+      - name: Add and Commit Files
+        run: |
+          # Check if there are any staged changes
+          changes=$(git diff-index --cached HEAD)
+          if [ -n "$changes" ]; then
+            # There are staged changes, so commit and push the files
+            git add additions.txt deletions.txt
+            git commit -m "Update file commit stats"
+            git push
+          else
+            # There are no staged changes, so do nothing
+            echo "Nothing to commit."
+          fi
+
