@@ -30,7 +30,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           changes=$(git diff-index --cached HEAD)
-          if [ -n "$changes" ]; then
+          echo "changes $changes"
+          if [ -n $changes ]; then
             git add additions.txt deletions.txt
             git commit -m "Update file commit stats"
             git push
