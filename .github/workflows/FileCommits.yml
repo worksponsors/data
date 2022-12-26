@@ -20,9 +20,11 @@ jobs:
           # Extract the number of additions and deletions
           additions=$(echo $diff | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo $diff | grep -oP "(?<=-).*(?= deletions?)")
+          echo "Addition: $additions"
+          echo "Deletion: $deletions"
           # Write the additions and deletions to separate files
-          echo "$additions" > additions.txt
-          echo "$deletions" > deletions.txt
+          echo $additions > additions.txt
+          echo $deletions > deletions.txt
       - name: Add and Commit Files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
