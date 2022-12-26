@@ -11,17 +11,28 @@ jobs:
         with:
           fetch-depth: 0
           paths: .
-      - name: List Files in Working Directory
+      - name: Find Last Commit Hash
         run: |
-          ls -la
+          last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
+          echo "Last commit hash: $last_commit_hash"
+      - name: List Files
+        run: |
+          ls
+          echo "Files in working directory:"
+          ls
       - name: Save Output
         run: |
-          echo "Saving output..."
-          # Compare the downloaded file to a previous version
-          diff=$(git diff HEAD --shortstat -- Skilled_Worker_List.csv)
+          # Replace the HEAD placeholder in the git diff command with the last commit hash
+          command=$(sed "s/HEAD/$last_commit_hash/g" <<< "git diff HEAD --shortstat -- Skilled_Worker_List.csv")
+          echo "Modified git diff command: $command"
+          # Run the modified git diff command
+          diff=$($command)
+          echo "Git diff output: $diff"
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
+          echo "Additions: $additions"
+          echo "Deletions: $deletions"
           # Write the additions and deletions to separate files
           echo "$additions" > additions.txt
           echo "$deletions" > deletions.txt
@@ -30,6 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           changes=$(git diff-index --cached HEAD)
+          echo "Changes: $changes"
           if [ -n "$changes" ]; then
             git add additions.txt deletions.txt
             git commit -m "Update file commit stats"
