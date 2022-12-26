@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
           paths: .
-      - name: Debug: Print Last Commit Hash
+      - name: Print Last Commit Hash
         run: |
           # Find the last commit hash
           last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
