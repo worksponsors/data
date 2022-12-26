@@ -15,46 +15,30 @@ jobs:
           route: GET ${{ secrets.GOV_UK_SPONSOR_LINK }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get current datetime
-        id: datetime
-        run: |-
-          echo "::set-output name=datetime::$(date +'%Y.%m.%d-%H.%M.%S')"
-          echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Check out current repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Download latest CSV from the link
-        run: |-
-          wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-          echo "${{ steps.datetime.outputs.datetime }} Updated ${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }} Timestamp" > latest_timestamp.txt
-      - name: Compare the latest and last updated CSV files to check for any changes
-        id: compare_csv
         run: |
-          if ! diff ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > /dev/null; then
-            echo "::set-output name=csv_changed::true"
-          else
-            echo "::set-output name=csv_changed::false"
-          fi
-      - name: Update the last updated CSV file with the latest CSV file if there are any changes
-        if: steps.compare_csv.outputs.csv_changed == 'true'
-        run: cp ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }}
+          # Get current datetime
+          datetime=$(date +'%Y.%m.%d-%H.%M.%S')
+          date=$(date +'%Y-%m-%d')
+
+          # Download latest CSV
+          wget ${{ fromJson(steps.get_details.outputs.data).details.attachments[0].url }} -O ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+          echo "$datetime Updated ${{ fromJson(steps.get_details.outputs.data).details.change_history[0].public_timestamp }} Timestamp" > latest_timestamp.txt
       - name: Add and Commit Files
+        if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
           git pull
-          changes=$(git diff-index --cached HEAD)
-          echo "Changes $changes"
-          if [ -n '$changes' ]; then
-            git add --all
-            git commit -m "Updates to CSV"
-            git push
-          else
-            echo "Nothing to commit."
-          fi
+          git add --all
+          git commit -m "Updates to CSV"
+          git push
   find-commits:
     needs: get-latesturl
     runs-on: ubuntu-latest
