@@ -13,17 +13,17 @@ jobs:
       - name: List Working Tree Files
         run: |
           echo "Files in working tree:"
-          ls -la
+          ls -la -a
       - name: Download File from Blob Storage
         uses: actions/download-artifact@v2
         with:
           name: my-file
-          path: ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+          path: Skilled_Worker_List.csv
       - name: Save Output
         run: |
           echo "Saving output..."
           # Compare the downloaded file to a previous version
-          diff=$(git diff HEAD --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          diff=$(git diff HEAD --shortstat -- ls -la Skilled_Worker_List.csv)
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
