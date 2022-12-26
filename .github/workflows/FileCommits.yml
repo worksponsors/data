@@ -18,8 +18,8 @@ jobs:
           echo "Last commit hash: $last_commit_hash"
       - name: Save Output
         run: |
-          # Use the parent commit of the last commit hash as the starting commit
-          diff=$(git diff "$last_commit_hash^" "$last_commit_hash" --shortstat -- Skilled_Worker_List.csv)
+          echo "Last commit hash inside SaveOutput: $last_commit_hash"
+          diff=$(git diff $last_commit_hash^ $last_commit_hash --shortstat -- Skilled_Worker_List.csv)
           echo "Git diff output: $diff"
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
