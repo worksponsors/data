@@ -11,13 +11,9 @@ jobs:
         with:
           fetch-depth: 0
           paths: .
-      - name: Print Last Commit Hash
-        run: |
-          # Find the last commit hash
-          last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
-          echo "Last commit hash: $last_commit_hash"
       - name: Save Output
         run: |
+          last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
           echo "Last commit hash inside SaveOutput: $last_commit_hash"
           diff=$(git diff $last_commit_hash^ $last_commit_hash --shortstat -- Skilled_Worker_List.csv)
           echo "Git diff output: $diff"
