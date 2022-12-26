@@ -10,9 +10,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Copy Local File
-        run: |
-          cp Skilled_Worker_List.csv .
       - name: Save Output
         run: |
           echo "Saving output..."
