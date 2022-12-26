@@ -10,9 +10,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Print Secret Value
+      - name: List Working Tree Files
         run: |
-          echo "Secret value: ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}"
+          echo "Files in working tree:"
+          ls -la
       - name: Download File from Blob Storage
         uses: actions/download-artifact@v2
         with:
