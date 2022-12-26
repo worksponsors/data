@@ -14,19 +14,17 @@ jobs:
           git pull
       - name: Find Last Commit Hash
         run: |
-          git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > last_commit_hash.txt
+          last_commit_hash=$(git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
       - name: Save Output
         run: |
-          while read -r commit_hash; do
-            # Get the difference between the commit and its parent commit
-            diff=$(git diff "$commit_hash"^ "$commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
-            # Extract the number of additions and deletions
-            additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
-            deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
-            # Write the additions and deletions to separate files
-            echo "$additions" > additions.txt
-            echo "$deletions" > deletions.txt
-          done < last_commit_hash.txt
+          # Get the difference between the commit and its parent commit
+          diff=$(git diff "$last_commit_hash"^ "$last_commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          # Extract the number of additions and deletions
+          additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
+          deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
+          # Write the additions and deletions to separate files
+          echo "$additions" > additions.txt
+          echo "$deletions" > deletions.txt
       - name: Add and Commit Files
         run: |
           # Check if there are any staged changes
@@ -40,4 +38,3 @@ jobs:
             # There are no staged changes, so do nothing
             echo "Nothing to commit."
           fi
-
