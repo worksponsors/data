@@ -6,14 +6,14 @@ jobs:
   find-commits:
     runs-on: ubuntu-latest
     steps:
-      - name: List Files in Working Directory
-        run: |
-          ls -l
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           paths: .
+      - name: List Files in Working Directory
+        run: |
+          ls -la
       - name: Save Output
         run: |
           echo "Saving output..."
