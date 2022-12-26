@@ -21,9 +21,14 @@ jobs:
       - name: Save Output
         run: |
           echo "Saving output..."
-          diff=$(git diff "$last_commit_hash"^ "$last_commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          # Get the hash of the parent commit
+          parent_commit_hash=$(git rev-parse "$last_commit_hash"^)
+          # Get the difference between the last commit and its parent commit
+          diff=$(git diff "$parent_commit_hash" "$last_commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
+          # Write the additions and deletions to separate files
           echo "$additions" > additions.txt
           echo "$deletions" > deletions.txt
       - name: Add and Commit Files
