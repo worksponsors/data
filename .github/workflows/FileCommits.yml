@@ -34,7 +34,7 @@ jobs:
           changes=$(git diff-index --cached HEAD)
           echo "changes $changes"
           if [ -n $changes ]; then
-            git add additions.txt deletions.txt
+            git add insertions.txt deletions.txt
             git commit -m "Update file commit stats"
             git push
           else
