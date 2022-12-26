@@ -9,34 +9,32 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update Repository
         run: |
+          echo "Updating repository..."
           git pull
       - name: Find Last Commit Hash
         run: |
+          echo "Finding last commit hash..."
           last_commit_hash=$(git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          echo "Last commit hash: $last_commit_hash"
       - name: Save Output
         run: |
-          # Get the difference between the commit and its parent commit
+          echo "Saving output..."
           diff=$(git diff "$last_commit_hash"^ "$last_commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
-          # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
-          # Write the additions and deletions to separate files
           echo "$additions" > additions.txt
           echo "$deletions" > deletions.txt
       - name: Add and Commit Files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Check if there are any staged changes
           changes=$(git diff-index --cached HEAD)
           if [ -n "$changes" ]; then
-            # There are staged changes, so commit and push the files
             git add additions.txt deletions.txt
             git commit -m "Update file commit stats"
             git push
           else
-            # There are no staged changes, so do nothing
             echo "Nothing to commit."
           fi
