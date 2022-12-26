@@ -20,10 +20,10 @@ jobs:
           # Extract the number of additions and deletions
           insertions=$(echo $diff | grep -oE "([0-9]+) insertions")
           deletions=$(echo $diff | grep -oE "([0-9]+) deletions")
-          echo "Addition: $additions"
+          echo "Addition: $insertions"
           echo "Deletion: $deletions"
           # Write the additions and deletions to separate files
-          echo $additions > additions.txt
+          echo $insertions > insertions.txt
           echo $deletions > deletions.txt
       - name: Add and Commit Files
         env:
