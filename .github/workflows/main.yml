@@ -58,9 +58,10 @@ jobs:
           paths: .
       - name: Save Output
         run: |
-          last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
+          git pull
+          last_commit_hash=$(git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
           echo "Last commit hash inside SaveOutput: $last_commit_hash"
-          diff=$(git diff $last_commit_hash^ $last_commit_hash --shortstat -- Skilled_Worker_List.csv)
+          diff=$(git diff $last_commit_hash^ $last_commit_hash --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
           echo "Git diff output: $diff"
           # Extract the number of additions and deletions
           insertions=$(echo $diff | grep -oE "([0-9]+) insertions")
@@ -76,7 +77,6 @@ jobs:
         run: |
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
-          git pull
           changes=$(git diff-index --cached HEAD)
           echo "Changes $changes"
           if [ -n '$changes' ]; then
