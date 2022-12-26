@@ -18,8 +18,8 @@ jobs:
           diff=$(git diff $last_commit_hash^ $last_commit_hash --shortstat -- Skilled_Worker_List.csv)
           echo "Git diff output: $diff"
           # Extract the number of additions and deletions
-          additions=$(echo $diff | grep -oP "(?<=\+).*(?= insertions?)")
-          deletions=$(echo $diff | grep -oP "(?<=-).*(?= deletions?)")
+          insertions=$(echo $diff | grep -oE "([0-9]+) insertions")
+          deletions=$(echo $diff | grep -oE "([0-9]+) deletions")
           echo "Addition: $additions"
           echo "Deletion: $deletions"
           # Write the additions and deletions to separate files
