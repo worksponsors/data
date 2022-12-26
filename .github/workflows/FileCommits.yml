@@ -6,37 +6,20 @@ jobs:
   find-commits:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Checkout File
-        run: |
-          echo "Checking out file..."
-          git checkout HEAD -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-      - name: List Working Tree Files
-        run: |
-          echo "Files in working tree:"
-          ls -la
-      - name: Update Repository
-        run: |
-          echo "Updating repository..."
-          git pull
-      - name: List Latest Commit Files
-        run: |
-          echo "Files in latest commit:"
-          git ls-tree --full-tree -r HEAD
-      - name: Find Last Commit Hash
-        run: |
-          echo "Finding last commit hash..."
-          last_commit_hash=$(git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
-          echo "Last commit hash: $last_commit_hash"
+      - name: Download File from Blob Storage
+        uses: actions/download-artifact@v2
+        with:
+          name: my-file
+          path: ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
       - name: Save Output
         run: |
           echo "Saving output..."
-          # Get the hash of the parent commit
-          parent_commit_hash=$(git log -1 --format=%H -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}^)
-          # Get the difference between the last commit and its parent commit
-          diff=$(git diff "$parent_commit_hash" "$last_commit_hash" --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
+          # Compare the downloaded file to a previous version
+          diff=$(git diff HEAD --shortstat -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }})
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
