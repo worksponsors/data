@@ -6,15 +6,19 @@ jobs:
   find-commits:
     runs-on: ubuntu-latest
     steps:
+      - name: List Files in Working Directory
+        run: |
+          ls -l
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          paths: .
       - name: Save Output
         run: |
           echo "Saving output..."
           # Compare the downloaded file to a previous version
-          diff=$(git diff HEAD --shortstat -- ./Skilled_Worker_List.csv)
+          diff=$(git diff HEAD --shortstat -- Skilled_Worker_List.csv)
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
