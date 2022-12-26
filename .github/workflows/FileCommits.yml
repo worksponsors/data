@@ -11,12 +11,16 @@ jobs:
         with:
           fetch-depth: 0
           paths: .
-      - name: Save Output
+      - name: Debug: Print Last Commit Hash
         run: |
           # Find the last commit hash
           last_commit_hash=$(git log -1 --format=%H -- Skilled_Worker_List.csv)
+          echo "Last commit hash: $last_commit_hash"
+      - name: Save Output
+        run: |
           # Use the parent commit of the last commit hash as the starting commit
           diff=$(git diff "$last_commit_hash^" "$last_commit_hash" --shortstat -- Skilled_Worker_List.csv)
+          echo "Git diff output: $diff"
           # Extract the number of additions and deletions
           additions=$(echo "$diff" | grep -oP "(?<=\+).*(?= insertions?)")
           deletions=$(echo "$diff" | grep -oP "(?<=-).*(?= deletions?)")
