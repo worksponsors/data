@@ -37,10 +37,10 @@ jobs:
         run: |
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
+          git pull
           changes=$(git diff-index --cached HEAD)
           echo "Changes $changes"
           if [ -n '$changes' ]; then
-            git pull
             git add --all
             git commit -m "Updates to CSV"
             git push
