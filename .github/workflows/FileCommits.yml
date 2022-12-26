@@ -13,10 +13,18 @@ jobs:
         run: |
           echo "Checking out file..."
           git checkout HEAD -- ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
+      - name: List Working Tree Files
+        run: |
+          echo "Files in working tree:"
+          ls -la
       - name: Update Repository
         run: |
           echo "Updating repository..."
           git pull
+      - name: List Latest Commit Files
+        run: |
+          echo "Files in latest commit:"
+          git ls-tree --full-tree -r HEAD
       - name: Find Last Commit Hash
         run: |
           echo "Finding last commit hash..."
