@@ -65,6 +65,9 @@ jobs:
           echo $insertions > insertions.txt
           echo $deletions > deletions.txt
           echo "$datetime Find Commit" > latest_Commit_timestamp.txt
+          # Create copy of the las commit
+          git show $last_commit_hash^:${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }}
+          
       - name: Add and Commit Files
         if: always()
         env:
