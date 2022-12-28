@@ -84,14 +84,14 @@ jobs:
     needs: find-commits
     runs-on: ubuntu-latest
     steps:
-    - name: Install csvkit
-      run: |
-        sudo apt-get update
-        sudo apt-get install csvkit
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Install csvkit
+      run: |
+        sudo apt-get update
+        sudo apt-get install csvkit
     - name: Compare CSV files
       run: |
         git pull
