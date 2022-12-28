@@ -79,29 +79,5 @@ jobs:
           git add --all
           git commit -m "Updates to CSV"
           git push
-          
-  compare:
-    needs: find-commits
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Install csvkit
-      run: |
-        sudo apt-get update
-        sudo apt-get install csvdiff
-    - name: Compare CSV files
-      run: |
-        git pull
-        csvdiff --style=pretty --output=diff.json ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
-    - name: Commit and push changes
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add --all
-        git commit -m "Add added, deleted, and updated records"
-        git push
 
 
