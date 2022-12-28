@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Find added records
-        run: comm -23 ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} {{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > added.csv
+        run: comm -23 ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > added.csv
       - name: Find deleted records
         run: grep -vFf ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > deleted.csv
       - name: Add and Commit Files
