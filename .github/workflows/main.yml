@@ -91,20 +91,16 @@ jobs:
     - name: Install csvkit
       run: |
         sudo apt-get update
-        sudo apt-get install csvkit
-    - name: Set PATH
-      run: |
-        export PATH=$PATH:/usr/local/bin
+        sudo apt-get install csvdiff
     - name: Compare CSV files
       run: |
         git pull
-        csvjoin -c 1,2 ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > Added_Updated.csv
-        csvdiff -d ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > Deleted.csv
+        csvdiff --style=pretty --output=diff.json ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}
     - name: Commit and push changes
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        git add added_or_updated.csv deleted.csv
+        git add --all
         git commit -m "Add added, deleted, and updated records"
         git push
 
