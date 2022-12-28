@@ -39,6 +39,7 @@ jobs:
           git add --all
           git commit -m "Updates to CSV"
           git push
+          
   find-commits:
     needs: get-latesturl
     runs-on: ubuntu-latest
@@ -80,8 +81,13 @@ jobs:
           git push
           
   compare:
+    needs: find-commits
     runs-on: ubuntu-latest
     steps:
+    - name: Install csvkit
+      run: |
+        sudo apt-get update
+        sudo apt-get install csvkit
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
