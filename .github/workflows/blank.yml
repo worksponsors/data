@@ -8,22 +8,19 @@ jobs:
   compare:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install csvkit
-      run: |
-        sudo apt-get update
-        sudo apt-get install csvkit
-    - name: Set PATH
-      run: |
-        export PATH=$PATH:/usr/local/bin
-    - name: Compare CSV files
-      run: |
-        csvjoin -c 1,2 ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > added_or_updated.csv
-        # csvdiff -d ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > deleted.csv
-    - name: Commit and push changes
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add added_or_updated.csv deleted.csv
-        git commit -m "Add added, deleted, and updated records"
-        git push
+      - uses: actions/checkout@v2
+      - name: Find added records
+        run: csvjoin -c 1,2 -j 1 ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > added.csv
+      - name: Find deleted records
+        run: grep -vFf ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > deleted.csv
+      - name: Add and Commit Files
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "Strange Supreme"
+          git config user.email "actions@github.com"
+          git pull
+          git add --all
+          git commit -m "Comparison"
+          git push
