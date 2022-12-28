@@ -19,7 +19,7 @@ jobs:
     - name: Compare CSV files
       run: |
         csvjoin -c 1,2 ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > added_or_updated.csv
-        csvdiff -d ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > deleted.csv
+        # csvdiff -d ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > deleted.csv
     - name: Commit and push changes
       run: |
         git config --global user.email "action@github.com"
