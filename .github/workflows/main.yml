@@ -92,6 +92,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install csvkit
+    - name: Set PATH
+      run: |
+        export PATH=$PATH:/usr/local/bin
     - name: Compare CSV files
       run: |
         git pull
