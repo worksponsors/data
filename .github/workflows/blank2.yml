@@ -18,11 +18,11 @@ jobs:
     - name: Sort file1.csv
       run: |
         echo "Sorting file1.csv by the first column..."
-        csvsort -c 1 file1.csv > file1_sorted.csv
+        csvsort -c 1 ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > file1_sorted.csv
     - name: Sort file2.csv
       run: |
         echo "Sorting file2.csv by the first column..."
-        csvsort -c 1 file2.csv > file2_sorted.csv
+        csvsort -c 1 ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > file2_sorted.csv
     # Find added records
     - name: Find added records
       run: |
@@ -45,6 +45,8 @@ jobs:
         csvjson -k deleted.csv > deleted.json
     # Commit and push changes
     - name: Commit and push changes
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "Committing and pushing changes to repository..."
         git config --global user.email "action@github.com"
