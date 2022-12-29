@@ -27,12 +27,12 @@ jobs:
     - name: Find added records
       run: |
         echo "Finding added records..."
-        csvjoin -c 1 file2_sorted.csv file1_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE file2 IS NOT NULL' > added.csv
+        csvjoin --alias first_file --alias second_file file2_sorted.csv file1_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE second_file IS NOT NULL' > added.csv
     # Find deleted records
     - name: Find deleted records
       run: |
         echo "Finding deleted records..."
-        csvjoin -c 1 file1_sorted.csv file2_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE file2 IS NULL' > deleted.csv
+        csvjoin --alias first_file --alias second_file file1_sorted.csv file2_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE second_file IS NULL' > deleted.csv
     # Convert added records to JSON
     - name: Convert added records to JSON
       run: |
