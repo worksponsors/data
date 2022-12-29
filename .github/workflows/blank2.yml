@@ -1,0 +1,55 @@
+name: Compare CSV files
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Install the csvkit package
+    - name: Install csvkit
+      run: |
+        echo "Installing csvkit package..."
+        sudo apt-get update
+        sudo apt-get install csvkit
+    # Sort file1.csv and file2.csv by the first column
+    - name: Sort file1.csv
+      run: |
+        echo "Sorting file1.csv by the first column..."
+        csvsort -c 1 file1.csv > file1_sorted.csv
+    - name: Sort file2.csv
+      run: |
+        echo "Sorting file2.csv by the first column..."
+        csvsort -c 1 file2.csv > file2_sorted.csv
+    # Find added records
+    - name: Find added records
+      run: |
+        echo "Finding added records..."
+        csvjoin -c 1 file2_sorted.csv file1_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE file2 IS NOT NULL' > added.csv
+    # Find deleted records
+    - name: Find deleted records
+      run: |
+        echo "Finding deleted records..."
+        csvjoin -c 1 file1_sorted.csv file2_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE file2 IS NULL' > deleted.csv
+    # Convert added records to JSON
+    - name: Convert added records to JSON
+      run: |
+        echo "Converting added records to JSON format with headers as properties..."
+        csvjson -k added.csv > added.json
+    # Convert deleted records to JSON
+    - name: Convert deleted records to JSON
+      run: |
+        echo "Converting deleted records to JSON format with headers as properties..."
+        csvjson -k deleted.csv > deleted.json
+    # Commit and push changes
+    - name: Commit and push changes
+      run: |
+        echo "Committing and pushing changes to repository..."
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add added.json deleted.json
+        git commit -m "Add added and deleted records in JSON format with headers"
+        git push
