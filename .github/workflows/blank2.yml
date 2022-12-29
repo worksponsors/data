@@ -1,10 +1,11 @@
 name: Compare CSV files
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
-  compare2:
+  compare:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,43 +15,28 @@ jobs:
         echo "Installing csvkit package..."
         sudo apt-get update
         sudo apt-get install csvkit
-    # Sort file1.csv and file2.csv by the first column
-    - name: Sort file1.csv
+    # Find added and deleted records
+    - name: Find added and deleted records
       run: |
-        echo "Sorting file1.csv by the first column..."
-        csvsort -c 1 ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > file1_sorted.csv
-    - name: Sort file2.csv
+        echo "Finding added and deleted records..."
+        csvjoin --columns file1,file2 "${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }}" "${{ secrets.GOV_UK_SPONSOR_CSV_PATH }}" | csvsql --query 'SELECT * FROM stdin WHERE file2 IS NOT NULL' > added.csv
+        csvsql --query 'SELECT * FROM stdin WHERE file2 IS NULL' < added.csv > deleted.csv
+    # Convert added and deleted records to JSON
+    - name: Convert added and deleted records to JSON
       run: |
-        echo "Sorting file2.csv by the first column..."
-        csvsort -c 1 ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > file2_sorted.csv
-    # Find added records
-    - name: Find added records
-      run: |
-        echo "Finding added records..."
-        csvjoin --alias first_file --alias second_file file2_sorted.csv file1_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE second_file IS NOT NULL' > added.csv
-    # Find deleted records
-    - name: Find deleted records
-      run: |
-        echo "Finding deleted records..."
-        csvjoin --alias first_file --alias second_file file1_sorted.csv file2_sorted.csv | csvsql --query 'SELECT * FROM stdin WHERE second_file IS NULL' > deleted.csv
-    # Convert added records to JSON
-    - name: Convert added records to JSON
-      run: |
-        echo "Converting added records to JSON format with headers as properties..."
+        echo "Converting added and deleted records to JSON format with headers as properties..."
         csvjson -k added.csv > added.json
-    # Convert deleted records to JSON
-    - name: Convert deleted records to JSON
-      run: |
-        echo "Converting deleted records to JSON format with headers as properties..."
         csvjson -k deleted.csv > deleted.json
-    # Commit and push changes
-    - name: Commit and push changes
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # Check in added and deleted records to the repository
+    - name: Check out repository
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.repository }}
+    - name: Add and commit added and deleted records
       run: |
-        echo "Committing and pushing changes to repository..."
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add added.json deleted.json
-        git commit -m "Add added and deleted records in JSON format with headers"
-        git push
+        git config user.email "action@github.com"
+        git config user.name "GitHub Action"
+        git add added.csv deleted.csv added.json deleted.json
+        git commit -m "Added and deleted records for $(date +%Y-%m-%d)"
+    - name: Push changes
+      run: git push
