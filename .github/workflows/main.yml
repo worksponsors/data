@@ -79,7 +79,9 @@ jobs:
           git add --all
           git commit -m "Updates to CSV"
           git push
+  
   compare:
+    needs: find-commits
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
