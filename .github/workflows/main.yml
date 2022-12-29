@@ -91,6 +91,10 @@ jobs:
         run: grep -vFf ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > Added_Records.csv
       - name: Find deleted records
         run: grep -vFf ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} ${{ secrets.GOV_UK_SPONSOR_CSV_LAST_UPDATED_PATH }} > Deleted_Records.csv
+      - name: Append header to Added_Records.csv
+        run: sed -i '1i name,city,county,rating,route' Added_Records.csv
+      - name: Append header to Deleted_Records.csv
+        run: sed -i '1i name,city,county,rating,route' Deleted_Records.csv
       - name: Write timestamp to file
         run: echo $(date +%Y%m%d%H%M%S) > comare_timestamp.txt
       - name: Add and Commit Files
