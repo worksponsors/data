@@ -1,4 +1,4 @@
-name: Fetch updated list of skilled sponsor companies
+name: Convert to Json
 on:
   workflow_dispatch:
 jobs:
