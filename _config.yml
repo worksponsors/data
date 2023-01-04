@@ -1,0 +1,5 @@
+# Configuration file for GitHub Pages
+
+# Enable CORS
+CORS:
+  origins: "*"
