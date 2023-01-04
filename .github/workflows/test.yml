@@ -20,12 +20,11 @@ jobs:
         # Use awk to sort the input file based on the values in the second column,
         # using the comma as the field separator.
         # The sorted file will be saved to sorted.csv.
-        awk -F, 'NR==1; NR>1 {print $0 | "sort -t, -k2,2"}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > sorted.csv
+        awk -F, 'NR==1; NR>1 {print $0 | "sort -t, -k1,1"}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > sorted.csv
     - name: Change header names
       run: |
         # Use sed to change the header names in the sorted.csv file.
-        sed '1s/^/name,city,county,rating,route\n/' sorted.csv > temp.csv
-        mv temp.csv sorted.csv
+        sed -i '1s/^/head1,head2,head3\n/' sorted.csv
     - name: Convert to JSON
       run: |
         # Use csvtojson to convert the sorted.csv file to JSON.
@@ -35,7 +34,7 @@ jobs:
       run: |
         # Use gzip to compress the output.json file.
         # The compressed file will be saved to output.json.gz.
-        gzip output.json
+        gzip -c output.json > output.json.gz
     - name: Delete sorted CSV
       run: |
         # Delete the sorted.csv file.
@@ -49,6 +48,6 @@ jobs:
           git config user.name "Strange Supreme"
           git config user.email "actions@github.com"
           git pull
-          git add --all
+          git add output.json.gz latest_Commit_timestamp.txt
           git commit -m "Updates to CSV"
           git push
