@@ -40,7 +40,6 @@ jobs:
       run: |
         # Delete the sorted.csv file.
         rm sorted.csv
-        rm temp.csv
         echo "$datetime Find Commit" > latest_Commit_timestamp.txt
     - name: Add and Commit Files
       if: always()
