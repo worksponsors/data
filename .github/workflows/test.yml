@@ -8,6 +8,13 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+    - name: Install csvtojson
+      run: |
+        npm install -g csvtojson
     - name: Sort CSV
       run: |
         # Use awk to sort the input file based on the values in the second column,
