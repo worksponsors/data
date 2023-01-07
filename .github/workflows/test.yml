@@ -15,32 +15,26 @@ jobs:
     - name: Install csvtojson
       run: |
         npm install -g csvtojson
-    - name: Sort CSV
-      run: |
-        # Use awk to sort the input file based on the values in the second column,
-        # using the comma as the field separator.
-        # The sorted file will be saved to sorted.csv.
-        awk -F, 'NR==1; NR>1 {print $0 | "sort -t, -k1,1"}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > sorted.csv
     - name: Change header names
       run: |
         # Use sed to change the header names in the sorted.csv file.
-        awk 'NR==1{print "name,city,county,rating,route"} NR>1{print $0}' sorted.csv > temp.csv
-        mv temp.csv sorted.csv
+        awk 'NR==1{print "name,city,county,rating,route,number"} NR>1{print $0, NR-1}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > output.csv
     - name: Convert to JSON
       run: |
         # Use csvtojson to convert the sorted.csv file to JSON.
         # The output will be saved to output.json.
-        csvtojson sorted.csv > output.json
+        echo "$datetime Find Commit" > latest_Commit_timestamp.txt
+        csvtojson output.csv > output.json
     - name: Compress JSON
       run: |
         # Use gzip to compress the output.json file.
         # The compressed file will be saved to output.json.gz.
         gzip -c output.json > output.json.gz
-    - name: Delete sorted CSV
+    - name: Delete output CSV
       run: |
-        # Delete the sorted.csv file.
-        rm sorted.csv
-        echo "$datetime Find Commit" > latest_Commit_timestamp.txt
+        # Delete the output.csv file.
+        rm output.csv
+       
     - name: Add and Commit Files
       if: always()
       env:
