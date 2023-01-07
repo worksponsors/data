@@ -18,7 +18,7 @@ jobs:
     - name: Change header names
       run: |
         # Use sed to change the header names in the sorted.csv file.
-        awk 'NR==1{print "name,city,county,rating,route,number"} NR>1{print $0, NR-1}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > output.csv
+        awk 'NR==1{print "name,city,county,rating,route,number"} NR>1{print $0,"\"" NR-1 "\""}' ${{ secrets.GOV_UK_SPONSOR_CSV_PATH }} > output.csv
     - name: Convert to JSON
       run: |
         # Use csvtojson to convert the sorted.csv file to JSON.
@@ -33,7 +33,7 @@ jobs:
     - name: Delete output CSV
       run: |
         # Delete the output.csv file.
-        rm output.csv
+        # rm output.csv
        
     - name: Add and Commit Files
       if: always()
