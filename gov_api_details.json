@@ -1,13 +1,13 @@
 {
   "attachment": {
-    "id": "7389770",
-    "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1164343/2023-06-21_-_Worker_and_Temporary_Worker.csv",
+    "id": "7391416",
+    "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1164760/2023-06-22_-_Worker_and_Temporary_Worker.csv",
     "isbn": "",
     "title": "Register of Worker and Temporary Worker licensed sponsors",
-    "filename": "2023-06-21_-_Worker_and_Temporary_Worker.csv",
-    "file_size": 7013728,
+    "filename": "2023-06-22_-_Worker_and_Temporary_Worker.csv",
+    "file_size": 7023616,
     "accessible": false,
-    "preview_url": "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/1164343/2023-06-21_-_Worker_and_Temporary_Worker.csv/preview",
+    "preview_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1164760/2023-06-22_-_Worker_and_Temporary_Worker.csv/preview",
     "content_type": "text/csv",
     "attachment_type": "file",
     "hoc_paper_number": "",
@@ -19,6 +19,6 @@
   },
   "change_history": {
     "note": "Updated register of licensed sponsors.",
-    "public_timestamp": "2023-06-21T09:48:30.000+01:00"
+    "public_timestamp": "2023-06-22T10:24:06.000+01:00"
   }
 }
