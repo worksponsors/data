@@ -5,20 +5,20 @@
     "attachment_type": "file",
     "command_paper_number": "",
     "content_type": "text/csv",
-    "file_size": 7228776,
-    "filename": "2023-07-21_-_Worker_and_Temporary_Worker.csv",
+    "file_size": 7242471,
+    "filename": "2023-07-24_-_Worker_and_Temporary_Worker.csv",
     "hoc_paper_number": "",
-    "id": "7445223",
+    "id": "7447451",
     "isbn": "",
-    "preview_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1172801/2023-07-21_-_Worker_and_Temporary_Worker.csv/preview",
+    "preview_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1173104/2023-07-24_-_Worker_and_Temporary_Worker.csv/preview",
     "title": "Register of Worker and Temporary Worker licensed sponsors",
     "unique_reference": "",
     "unnumbered_command_paper": false,
     "unnumbered_hoc_paper": false,
-    "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1172801/2023-07-21_-_Worker_and_Temporary_Worker.csv"
+    "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1173104/2023-07-24_-_Worker_and_Temporary_Worker.csv"
   },
   "change_history": {
     "note": "Updated register of licensed sponsors.",
-    "public_timestamp": "2023-07-21T09:20:56.000+01:00"
+    "public_timestamp": "2023-07-24T09:23:00.000+01:00"
   }
 }
