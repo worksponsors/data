@@ -5,20 +5,20 @@
     "attachment_type": "file",
     "command_paper_number": "",
     "content_type": "text/csv",
-    "file_size": 11058712,
-    "filename": "2025-04-04_-_Worker_and_Temporary_Worker.csv",
+    "file_size": 11065962,
+    "filename": "2025-04-07_-_Worker_and_Temporary_Worker.csv",
     "hoc_paper_number": "",
-    "id": "8557047",
+    "id": "8559904",
     "isbn": "",
-    "preview_url": "https://assets.publishing.service.gov.uk/media/1311269/2025-04-04_-_Worker_and_Temporary_Worker.csv/preview",
+    "preview_url": "https://assets.publishing.service.gov.uk/media/1311472/2025-04-07_-_Worker_and_Temporary_Worker.csv/preview",
     "title": "Register of Worker and Temporary Worker licensed sponsors",
     "unique_reference": "",
     "unnumbered_command_paper": false,
     "unnumbered_hoc_paper": false,
-    "url": "https://assets.publishing.service.gov.uk/media/67ef929098b3bac1ec299cf3/2025-04-04_-_Worker_and_Temporary_Worker.csv"
+    "url": "https://assets.publishing.service.gov.uk/media/67f386c62c7cfb9f47d956e6/2025-04-07_-_Worker_and_Temporary_Worker.csv"
   },
   "change_history": {
     "note": "Updated register of licensed sponsors.",
-    "public_timestamp": "2025-04-04T09:11:50.000+01:00"
+    "public_timestamp": "2025-04-07T12:44:02.000+01:00"
   }
 }
