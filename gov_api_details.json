@@ -4,28 +4,28 @@
     "alternative_format_contact_email": "alternativeformats@homeoffice.gov.uk",
     "assets": [
       {
-        "asset_manager_id": "682476ec7293a87b6c75ebf4",
-        "filename": "2025-05-14_-_Worker_and_Temporary_Worker.csv"
+        "asset_manager_id": "6825a9db7293a87b6c75ec98",
+        "filename": "2025-05-15_-_Worker_and_Temporary_Worker.csv"
       }
     ],
     "attachment_type": "file",
     "command_paper_number": "",
     "content_type": "text/csv",
-    "file_size": 11204857,
-    "filename": "2025-05-14_-_Worker_and_Temporary_Worker.csv",
+    "file_size": 11210910,
+    "filename": "2025-05-15_-_Worker_and_Temporary_Worker.csv",
     "hoc_paper_number": "",
-    "id": "8629982",
+    "id": "8632668",
     "isbn": "",
     "locale": "en",
-    "preview_url": "https://assets.publishing.service.gov.uk/media/1318706/2025-05-14_-_Worker_and_Temporary_Worker.csv/preview",
+    "preview_url": "https://assets.publishing.service.gov.uk/media/1318934/2025-05-15_-_Worker_and_Temporary_Worker.csv/preview",
     "title": "Register of Worker and Temporary Worker licensed sponsors",
     "unique_reference": "",
     "unnumbered_command_paper": false,
     "unnumbered_hoc_paper": false,
-    "url": "https://assets.publishing.service.gov.uk/media/682476ec7293a87b6c75ebf4/2025-05-14_-_Worker_and_Temporary_Worker.csv"
+    "url": "https://assets.publishing.service.gov.uk/media/6825a9db7293a87b6c75ec98/2025-05-15_-_Worker_and_Temporary_Worker.csv"
   },
   "change_history": {
     "note": "Updated register of licensed sponsors.",
-    "public_timestamp": "2025-05-14T12:01:59.000+01:00"
+    "public_timestamp": "2025-05-15T09:52:53.000+01:00"
   }
 }
